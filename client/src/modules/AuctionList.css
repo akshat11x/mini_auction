@@ -1,0 +1,73 @@
+/* AuctionList.css */
+
+.auction-list {
+  max-width: 900px;
+  margin: auto;
+  padding: 20px;
+}
+
+.auction-list h2 {
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.loading,
+.no-auctions {
+  text-align: center;
+  margin-top: 40px;
+  font-size: 1.1rem;
+  color: #555;
+}
+
+.auction-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 20px;
+}
+
+.auction-card {
+  background: #f9fbfd;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  padding: 16px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+  cursor: pointer;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.auction-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 16px rgba(0,0,0,0.08);
+}
+
+.auction-card h3 {
+  margin-top: 0;
+  margin-bottom: 8px;
+}
+
+.auction-card p {
+  margin: 4px 0;
+  font-size: 0.9rem;
+  color: #444;
+}
+
+.auction-info {
+  margin-top: 8px;
+  font-size: 0.85rem;
+  color: #555;
+}
+
+.view-btn {
+  margin-top: 12px;
+  background: #007bff;
+  color: white;
+  border: none;
+  padding: 8px 14px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 0.9rem;
+}
+
+.view-btn:hover {
+  background: #0056b3;
+}

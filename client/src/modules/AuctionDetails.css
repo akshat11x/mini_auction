@@ -1,0 +1,152 @@
+/* AuctionDetails.css */
+
+.auction-details {
+  max-width: 700px;
+  margin: auto;
+  padding: 20px;
+}
+
+.back-btn {
+  background: none;
+  border: none;
+  color: #007bff;
+  font-size: 1rem;
+  cursor: pointer;
+  margin-bottom: 12px;
+}
+
+.back-btn:hover {
+  text-decoration: underline;
+}
+
+.auction-card {
+  background: #f9fbfd;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  padding: 20px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+  margin-bottom: 20px;
+}
+
+.auction-card h2 {
+  margin: 0 0 10px 0;
+}
+
+.auction-info p {
+  margin: 4px 0;
+  font-size: 0.95rem;
+}
+
+.bids-section {
+  margin-bottom: 20px;
+}
+
+.bids-list {
+  list-style: none;
+  padding: 0;
+}
+
+.bids-list li {
+  background: #fff;
+  border: 1px solid #eee;
+  padding: 10px;
+  margin-bottom: 8px;
+  border-radius: 8px;
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.9rem;
+}
+
+.bidder {
+  font-weight: 600;
+}
+
+.amount {
+  color: #007bff;
+  font-weight: bold;
+}
+
+.place-bid {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 20px;
+}
+
+.place-bid input {
+  flex: 1;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+}
+
+.place-bid button {
+  background: #007bff;
+  border: none;
+  padding: 10px 16px;
+  border-radius: 8px;
+  color: white;
+  cursor: pointer;
+}
+
+.place-bid button:hover {
+  background: #0056b3;
+}
+
+.seller-actions {
+  background: #fff8f0;
+  border: 1px solid #f5d0a9;
+  padding: 16px;
+  border-radius: 12px;
+}
+
+.seller-actions h4 {
+  margin-top: 0;
+}
+
+.seller-actions button {
+  margin-top: 8px;
+  margin-right: 8px;
+  padding: 8px 12px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 500;
+}
+
+.accept-btn {
+  background: #28a745;
+  color: white;
+}
+
+.reject-btn {
+  background: #dc3545;
+  color: white;
+}
+
+.counter-offer {
+  margin-top: 10px;
+  display: flex;
+  gap: 8px;
+}
+
+.counter-offer input {
+  flex: 1;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+}
+
+.counter-offer button {
+  background: #17a2b8;
+  color: white;
+}
+
+.error-msg {
+  color: #d9534f;
+  margin-top: 8px;
+}
+
+.success-msg {
+  color: #28a745;
+  margin-top: 8px;
+}
