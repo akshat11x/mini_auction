@@ -46,7 +46,7 @@ git clone https://github.com/akshat11x/mini_auction.git
 cd mini_auction
 ```
 
-###2️⃣ Backend Setup
+##2️⃣ Backend Setup
 ```bash
 cd server
 npm install
@@ -71,14 +71,14 @@ npm start
 | `counter-offer` | Seller counter offers buyer             |
 | `auction-ended` | Auction is closed, highest bid declared |
 
-###🚀 Roadmap / Future Enhancements
+##🚀 Roadmap / Future Enhancements
 
 📧 Email notifications for bid updates (SendGrid)
 🧾 PDF invoice generation for winning bids
 📱 Mobile-friendly responsive design
 💳 Payment gateway integration
 
-###🤝 Contributing
+##🤝 Contributing
 
 🍴 Fork the repo
 🌱 Create your Feature Branch (git checkout -b feature/AmazingFeature)
