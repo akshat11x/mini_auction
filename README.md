@@ -92,3 +92,25 @@ Supabase
 Redis
 
                                                         🔥 Built with ❤️ by Akshat Jain
+
+## Deploy to Render (single Dockerfile)
+
+This repo includes a Dockerfile that builds the React client and serves it from the Node/Express server. To deploy on Render:
+
+1. Push this repo to GitHub.
+2. Create a new Web Service on Render, choose "Deploy from a repository" and select this repo.
+3. Select "Docker" for Runtime. Render will auto-detect the Dockerfile at the repo root.
+4. Environment:
+    - Set `NODE_ENV=production`.
+    - Provide required secrets for server (e.g., `SUPABASE_URL`, `SUPABASE_KEY`, `SENDGRID_API_KEY`, `UPSTASH_REDIS_REST_URL`, `UPSTASH_REDIS_REST_TOKEN`, etc.).
+5. Health check path: `/healthz` (optional).
+6. Save and deploy. Render sets `PORT`; the app listens on it.
+
+### CI/CD with GitHub Actions
+
+The workflow `.github/workflows/render-deploy.yml` will:
+- Install and build client and server
+- Build the Docker image to validate the Dockerfile
+- Trigger a Render deploy via Deploy Hook URL
+
+Set the repository secret `RENDER_DEPLOY_HOOK_URL` with your service Deploy Hook (Render Dashboard > your service > Settings > Deploy Hook).

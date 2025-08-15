@@ -7,7 +7,7 @@ function AuctionList({ onSelectAuction }) {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch('http://localhost:4000/api/auctions')
+    fetch('/api/auctions')
       .then(res => res.json())
       .then(data => {
         setAuctions(data.auctions || []);

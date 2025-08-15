@@ -1,0 +1,40 @@
+name: CI and Deploy to Render
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  ci-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+
+      - name: Install server deps
+        working-directory: server
+        run: npm ci || npm install
+
+      - name: Install client deps and build
+        working-directory: client
+        run: |
+          npm ci || npm install
+          npm run build
+
+      - name: Docker build (validate Dockerfile)
+        run: docker build -t mini-auction:ci .
+
+      - name: Trigger Render deploy
+        if: github.ref == 'refs/heads/main'
+        env:
+          RENDER_DEPLOY_HOOK_URL: ${{ secrets.RENDER_DEPLOY_HOOK_URL }}
+        run: |
+          if [ -z "$RENDER_DEPLOY_HOOK_URL" ]; then
+            echo "RENDER_DEPLOY_HOOK_URL is not set. Add it in repo settings > Secrets and variables > Actions." && exit 1
+          fi
+          curl -fsS -X POST "$RENDER_DEPLOY_HOOK_URL"

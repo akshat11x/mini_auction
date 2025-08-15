@@ -16,7 +16,12 @@ function AuctionApp() {
 
   useEffect(() => {
     if (!user) return;
-    wsRef.current = new window.WebSocket('ws://localhost:4000');
+    // Use same-origin WebSocket in production; fallback to localhost in dev
+    const loc = window.location;
+    const wsProtocol = loc.protocol === 'https:' ? 'wss:' : 'ws:';
+    const host = loc.host || 'localhost:4000';
+    const wsUrl = `${wsProtocol}//${host}`;
+    wsRef.current = new window.WebSocket(wsUrl);
 
     wsRef.current.onmessage = (event) => {
       try {

@@ -10,7 +10,7 @@ function AuctionDetails({ auction, onBack, userId, role }) {
   const [actionMsg, setActionMsg] = useState('');
 
   useEffect(() => {
-    fetch(`http://localhost:4000/api/auction/${auction.id}/bids`)
+    fetch(`/api/auction/${auction.id}/bids`)
       .then(res => res.json())
       .then(data => {
         setBids(data.bids || []);
@@ -32,7 +32,7 @@ function AuctionDetails({ auction, onBack, userId, role }) {
         return;
       }
     }
-    const res = await fetch(`http://localhost:4000/api/auction/${auction.id}/bid`, {
+  const res = await fetch(`/api/auction/${auction.id}/bid`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ userId, amount: Number(amount) })
@@ -49,7 +49,7 @@ function AuctionDetails({ auction, onBack, userId, role }) {
   // Seller actions
   const acceptBid = async () => {
     setActionMsg('');
-    const res = await fetch(`http://localhost:4000/api/auction/${auction.id}/accept`, { method: 'POST' });
+  const res = await fetch(`/api/auction/${auction.id}/accept`, { method: 'POST' });
     const data = await res.json();
     if (res.ok) setActionMsg('✅ Bid accepted!');
     else setActionMsg(data.error || 'Accept failed');
@@ -57,7 +57,7 @@ function AuctionDetails({ auction, onBack, userId, role }) {
 
   const rejectBid = async () => {
     setActionMsg('');
-    const res = await fetch(`http://localhost:4000/api/auction/${auction.id}/reject`, { method: 'POST' });
+  const res = await fetch(`/api/auction/${auction.id}/reject`, { method: 'POST' });
     const data = await res.json();
     if (res.ok) setActionMsg('❌ Bid rejected!');
     else setActionMsg(data.error || 'Reject failed');
@@ -65,7 +65,7 @@ function AuctionDetails({ auction, onBack, userId, role }) {
 
   const sendCounterOffer = async () => {
     setActionMsg('');
-    const res = await fetch(`http://localhost:4000/api/auction/${auction.id}/counter`, {
+  const res = await fetch(`/api/auction/${auction.id}/counter`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ counterAmount: Number(counterAmount) })

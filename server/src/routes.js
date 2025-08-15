@@ -154,4 +154,16 @@ router.post('/auction/:id/counter', async (req, res) => {
   res.json({ auction: data[0], message: 'Counter-offer sent' });
 });
 
+// Seller rejects highest bid
+router.post('/auction/:id/reject', async (req, res) => {
+  const auctionId = req.params.id;
+  const { data, error } = await supabase
+    .from('auctions')
+    .update({ status: 'rejected' })
+    .eq('id', auctionId)
+    .select('*');
+  if (error) return res.status(400).json({ error: error.message });
+  res.json({ auction: data[0], message: 'Bid rejected' });
+});
+
 module.exports = router;

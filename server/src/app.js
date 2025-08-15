@@ -2,6 +2,7 @@
 
 const express = require('express');
 const http = require('http');
+const path = require('path');
 const { Server } = require('ws');
 const routes = require('./routes');
 const redis = require('./cache');
@@ -18,8 +19,16 @@ app.use(cors());
 app.use(express.json());
 app.use('/api', routes);
 
-app.get('/', (req, res) => {
-  res.send('Auction backend is running.');
+// Serve static React build
+const staticDir = path.join(__dirname, '..', 'build');
+app.use(express.static(staticDir));
+
+// Simple health endpoint
+app.get('/healthz', (req, res) => res.send('ok'));
+
+// SPA fallback for non-API routes
+app.get(/^\/(?!api).*/, (req, res) => {
+  res.sendFile(path.join(staticDir, 'index.html'));
 });
 
 // In-memory auction state for demonstration (replace with DB in production)
@@ -73,6 +82,8 @@ wsServer.on('connection', (socket) => {
   });
 });
 
-server.listen(4000, () => {
-  console.log('Backend listening on port 4000');
+const PORT = process.env.PORT || 4000;
+app.set('trust proxy', true);
+server.listen(PORT, () => {
+  console.log(`Backend listening on port ${PORT}`);
 });

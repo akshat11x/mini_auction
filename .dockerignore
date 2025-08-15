@@ -1,0 +1,8 @@
+# Ignore node modules and git files
+**/node_modules
+.git
+.gitignore
+npm-debug.log*
+yarn-error.log*
+client/build
+# Docker will copy build from first stage
