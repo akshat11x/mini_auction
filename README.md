@@ -44,3 +44,11 @@
 ```bash
 git clone https://github.com/akshat11x/mini_auction.git
 cd mini_auction
+```
+
+###2️⃣ Backend Setup
+```bash
+cd server
+npm install
+npm start
+```
