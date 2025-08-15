@@ -91,4 +91,4 @@ Supabase
 
 Redis
 
-                🔥 Built with ❤️ by Akshat Jain
+                                                        🔥 Built with ❤️ by Akshat Jain
