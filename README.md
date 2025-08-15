@@ -52,3 +52,45 @@ cd server
 npm install
 npm start
 ```
+👉 Runs at: http://localhost:4000
+
+3️⃣ Frontend Setup
+```bash
+cd client
+npm install
+npm start
+```
+👉 Runs at: http://localhost:3000
+
+🔗 API & WebSocket Flow
+| Event           | Description                             |
+| --------------- | --------------------------------------- |
+| `bid`           | Buyer places a new bid                  |
+| `bid-accepted`  | Seller accepts bid                      |
+| `bid-rejected`  | Seller rejects bid                      |
+| `counter-offer` | Seller counter offers buyer             |
+| `auction-ended` | Auction is closed, highest bid declared |
+
+###🚀 Roadmap / Future Enhancements
+
+📧 Email notifications for bid updates (SendGrid)
+🧾 PDF invoice generation for winning bids
+📱 Mobile-friendly responsive design
+💳 Payment gateway integration
+
+###🤝 Contributing
+
+🍴 Fork the repo
+🌱 Create your Feature Branch (git checkout -b feature/AmazingFeature)
+💾 Commit your Changes (git commit -m 'Add some AmazingFeature')
+🚀 Push to the Branch (git push origin feature/AmazingFeature)
+🎉 Open a Pull Request
+
+💡 Acknowledgements
+
+React
+Express
+Supabase
+Redis
+
+🔥 Built with ❤️ by Akshat Jain
