@@ -26,6 +26,15 @@ app.use(express.static(staticDir));
 // Simple health endpoint
 app.get('/healthz', (req, res) => res.send('ok'));
 
+// Expose a runtime env script for the client (Supabase, etc.)
+app.get('/env.js', (req, res) => {
+  const env = {
+    REACT_APP_SUPABASE_URL: process.env.REACT_APP_SUPABASE_URL || process.env.SUPABASE_URL || '',
+    REACT_APP_SUPABASE_ANON_KEY: process.env.REACT_APP_SUPABASE_ANON_KEY || process.env.SUPABASE_ANON_KEY || ''
+  };
+  res.type('application/javascript').send(`window.__ENV = ${JSON.stringify(env)};`);
+});
+
 // SPA fallback for non-API routes
 app.get(/^\/(?!api).*/, (req, res) => {
   res.sendFile(path.join(staticDir, 'index.html'));
