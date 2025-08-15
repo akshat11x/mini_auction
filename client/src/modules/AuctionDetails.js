@@ -1,10 +1,7 @@
-// AuctionDetails.js - Shows details and bids for a selected auction
 import React, { useEffect, useState } from 'react';
-import { useUser } from './UserContext';
 import './AuctionDetails.css';
 
-function AuctionDetails({ auction, onBack }) {
-  const { userId, role } = useUser();
+function AuctionDetails({ auction, onBack, userId, role }) {
   const [bids, setBids] = useState([]);
   const [amount, setAmount] = useState('');
   const [loading, setLoading] = useState(true);
@@ -23,6 +20,18 @@ function AuctionDetails({ auction, onBack }) {
 
   const placeBid = async () => {
     setError('');
+    if(bids.length==0){
+        if (Number(amount) <= auction.starting_bid) {
+        setError(`Bid must be greater than starting bid (${auction.starting_bid})`);
+        return;
+      }
+    }
+    else {
+      if (Number(amount) < highestBid + auction.bid_increment) {
+        setError(`Bid must be at least ${highestBid + auction.bid_increment}`);
+        return;
+      }
+    }
     const res = await fetch(`http://localhost:4000/api/auction/${auction.id}/bid`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -66,6 +75,9 @@ function AuctionDetails({ auction, onBack }) {
     else setActionMsg(data.error || 'Counter-offer failed');
   };
 
+  // Find highest bid
+  const highestBid = bids.length > 0 ? Math.max(...bids.map(b => b.amount)) : null;
+
   return (
     <div className="auction-details">
       <button className="back-btn" onClick={onBack}>← Back to Auctions</button>
@@ -82,6 +94,13 @@ function AuctionDetails({ auction, onBack }) {
           <p><strong>Status:</strong> {auction.status}</p>
           <p><strong>Ends:</strong> {new Date(auction.end_time).toLocaleString()}</p>
         </div>
+
+        {/* Show highest bid */}
+        {highestBid !== null && (
+          <div className="highest-bid">
+            <strong>Highest Bid:</strong> ${highestBid}
+          </div>
+        )}
       </div>
 
       <div className="bids-section">
@@ -103,7 +122,9 @@ function AuctionDetails({ auction, onBack }) {
         )}
       </div>
 
-      <div className="place-bid">
+      {
+(userId!== auction.owner && auction.status==='active' && role==='buyer') && (
+    <div className="place-bid">
         <input
           type="number"
           value={amount}
@@ -113,6 +134,9 @@ function AuctionDetails({ auction, onBack }) {
         <button onClick={placeBid} disabled={!amount || !userId}>Place Bid</button>
         {error && <div className="error-msg">{error}</div>}
       </div>
+)
+    
+      }
 
       {role === 'seller' && userId === auction.owner && (
         <div className="seller-actions">

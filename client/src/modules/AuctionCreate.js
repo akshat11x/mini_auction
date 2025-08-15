@@ -102,7 +102,7 @@ function AuctionCreate({ onCreated }) {
       <input
         value={owner}
         onChange={e => setOwner(e.target.value)}
-        placeholder="Owner"
+        placeholder="Email"
         required
       />
 

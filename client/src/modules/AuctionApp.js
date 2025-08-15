@@ -1,21 +1,21 @@
-// AuctionApp.js - Main auction frontend component
-
 import React, { useState, useEffect, useRef } from 'react';
 import AuctionList from './AuctionList';
 import AuctionDetails from './AuctionDetails';
 import AuctionCreate from './AuctionCreate';
 import NotificationBar from './NotificationBar';
-import { useUser } from './UserContext';
-import './AuctionApp.css';   // <-- Added CSS import
+import AuthPanel from './AuthPanel';
+import './AuctionApp.css';
 
 function AuctionApp() {
   const [selectedAuction, setSelectedAuction] = useState(null);
   const [refresh, setRefresh] = useState(false);
   const [notifications, setNotifications] = useState([]);
+  const [user, setUser] = useState(null);
+  const [role, setRole] = useState('buyer');
   const wsRef = useRef(null);
-  const { userId, setUserId, role, setRole } = useUser();
 
   useEffect(() => {
+    if (!user) return;
     wsRef.current = new window.WebSocket('ws://localhost:4000');
 
     wsRef.current.onmessage = (event) => {
@@ -52,21 +52,24 @@ function AuctionApp() {
         wsRef.current.close();
       }
     };
-  }, []);
+  }, [user]);
 
   const clearNotifications = () => setNotifications([]);
 
+  // Show AuthPanel first if not logged in
+  if (!user) {
+    return (
+      <div className="auction-app">
+        <h1 className="title">Mini Auction Platform</h1>
+        <AuthPanel user={user} onAuth={setUser} onLogout={() => setUser(null)} />
+      </div>
+    );
+  }
+
   return (
     <div className="auction-app">
+      <AuthPanel user={user} onAuth={setUser} onLogout={() => setUser(null)} />
       <div className="user-controls">
-        <label>
-          User ID:
-          <input
-            value={userId}
-            onChange={e => setUserId(e.target.value)}
-            placeholder="Enter user ID"
-          />
-        </label>
         <label>
           Role:
           <select value={role} onChange={e => setRole(e.target.value)}>
@@ -85,13 +88,17 @@ function AuctionApp() {
 
       {!selectedAuction ? (
         <>
-          <AuctionCreate onCreated={() => setRefresh((r) => !r)} />
+          {role === 'seller' && (
+            <AuctionCreate onCreated={() => setRefresh((r) => !r)} owner={user.email} />
+          )}
           <AuctionList onSelectAuction={setSelectedAuction} key={refresh} />
         </>
       ) : (
         <AuctionDetails
           auction={selectedAuction}
           onBack={() => setSelectedAuction(null)}
+          userId={user.email}
+          role={role}
         />
       )}
     </div>

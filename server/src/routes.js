@@ -87,25 +87,60 @@ router.get('/auction/:id/bids', async (req, res) => {
 
 
 // Seller accepts highest bid
+// router.post('/auction/:id/accept', async (req, res) => {
+//   const auctionId = req.params.id;
+//   // Update auction status
+//   const { data, error } = await supabase.from('auctions').update({ status: 'accepted' }).eq('id', auctionId).select('*');
+//   if (error) return res.status(400).json({ error });
+//   // Notify highest bidder (WebSocket and email)
+//   // TODO: Implement notification logic
+//   res.json({ auction: data[0], message: 'Bid accepted' });
+// });
+
+// Seller accepts highest bid
 router.post('/auction/:id/accept', async (req, res) => {
   const auctionId = req.params.id;
+
+  // Get highest bid for this auction
+  const { data: highestBids, error: bidError } = await supabase
+    .from('bids')
+    .select('*')
+    .eq('auction_id', auctionId)
+    .order('amount', { ascending: false })
+    .limit(1);
+
+  if (bidError) return res.status(400).json({ error: bidError.message });
+  if (!highestBids || highestBids.length === 0) {
+    return res.status(400).json({ error: 'No bids found for this auction' });
+  }
+
+  const highestBid = highestBids[0];
+
   // Update auction status
-  const { data, error } = await supabase.from('auctions').update({ status: 'accepted' }).eq('id', auctionId).select('*');
-  if (error) return res.status(400).json({ error });
-  // Notify highest bidder (WebSocket and email)
-  // TODO: Implement notification logic
-  res.json({ auction: data[0], message: 'Bid accepted' });
+  const { data, error } = await supabase
+    .from('auctions')
+    .update({ status: 'accepted' })
+    .eq('id', auctionId)
+    .select('*');
+
+  if (error) return res.status(400).json({ error: error.message });
+
+  // --- Send email notification ---
+  try {
+    await sendAuctionEmail(
+      'akshatjain2k3@gmail.com', // Replace with real user email lookup
+      'Congratulations! Your bid has been accepted 🎉',
+      `<p>Hi bidder,</p>
+       <p>Your bid of <strong>$${highestBid.amount}</strong> for auction <strong>${data[0].title}</strong> has been accepted by the seller.</p>
+       <p>We’ll follow up with payment and delivery details soon.</p>`
+    );
+  } catch (mailErr) {
+    console.error('Failed to send email:', mailErr);
+  }
+
+  res.json({ auction: data[0], highestBid, message: 'Bid accepted and email sent' });
 });
 
-// Seller rejects highest bid
-router.post('/auction/:id/reject', async (req, res) => {
-  const auctionId = req.params.id;
-  const { data, error } = await supabase.from('auctions').update({ status: 'rejected' }).eq('id', auctionId).select('*');
-  if (error) return res.status(400).json({ error });
-  // Notify highest bidder (WebSocket and email)
-  // TODO: Implement notification logic
-  res.json({ auction: data[0], message: 'Bid rejected' });
-});
 
 // Seller makes a counter-offer
 router.post('/auction/:id/counter', async (req, res) => {
