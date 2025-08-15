@@ -46,18 +46,20 @@ git clone https://github.com/akshat11x/mini_auction.git
 cd mini_auction
 ```
 ###2️⃣ Backend Setup
+```bash
 cd server
 npm install
 npm start
-
+```
 
 👉 Backend runs at: http://localhost:4000
 
 ###3️⃣ Frontend Setup
+```bash
 cd client
 npm install
 npm start
-
+```
 
 👉 Frontend runs at: http://localhost:3000
 
